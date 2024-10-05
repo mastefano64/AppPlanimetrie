@@ -1,0 +1,45 @@
+<div class="outer-floorplands-bar">
+  <div class="inner-floorplands-bar" [ngClass]="{ 'floorplands-bar-left': alignNavbar() === 'top-left',
+                     'floorplands-bar-right': alignNavbar() === 'top-right' }">
+    @if (enableNavbar() === true) {
+      <div class="navbar-container">
+        @if (enableNavbarZoom() === true) {
+          <div class="navbar-item" matTooltip="Zoom +">
+            <img class="navbar-item-img" src="/zoom01.png" (click)="onCommandButton('zoom-plus')">
+          </div>
+          <div class="navbar-item" matTooltip="Zoom -">
+            <img class="navbar-item-img" src="/zoom02.png" (click)="onCommandButton('zoom-minus')">
+          </div>
+          <div class="navbar-item" matTooltip="Rest zoom">
+            <img class="navbar-item-img" src="/zoom03.png" (click)="onCommandButton('zoom-reset')">
+          </div>
+          <div class="navbar-item" matTooltip="Floor plan fit">
+            <img class="navbar-item-img" src="/zoom04.png" (click)="onCommandButton('zoom-fit')">
+          </div>
+        }
+        @if (enableNavbarPosition() === true) {
+          <div class="navbar-item" matTooltip="Bottom-left">
+            <img class="navbar-item-img" src="/zoom05.png" (click)="onCommandButton('bottom-left')">
+          </div>
+          <div class="navbar-item" matTooltip="Top-left">
+            <img class="navbar-item-img" src="/zoom06.png" (click)="onCommandButton('top-left')">
+          </div>
+          <div class="navbar-item" matTooltip="Top-right">
+            <img class="navbar-item-img" src="/zoom07.png" (click)="onCommandButton('top-right')">
+          </div>
+          <div class="navbar-item" matTooltip="Bottom-right">
+            <img class="navbar-item-img" src="/zoom08.png" (click)="onCommandButton('bottom-right')">
+          </div>
+          <div class="navbar-item" matTooltip="Center">
+            <img class="navbar-item-img" src="/zoom09.png" (click)="onCommandButton('center')">
+          </div>
+        }
+        @if (enableSelectedPosition() === true) {
+          <div class="navbar-item" matTooltip="Clear position">
+            <img class="navbar-item-img" src="/zoom10.png" (click)="onCommandButton('clear-position')">
+          </div>
+        }
+    </div>
+    }
+  </div>
+</div>

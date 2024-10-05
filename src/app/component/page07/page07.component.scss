@@ -1,0 +1,28 @@
+.panelButtons {
+  text-align: center;
+  padding: 10px;
+}
+
+#overlay1 {
+  top: 0px;
+  left: 0px;
+  display: none;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  padding: 4px;
+  border: solid 4px #006666;
+  background: #ffffff;
+}
+
+#overlay2 {
+  top: 0px;
+  left: 0px;
+  display: none;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  padding: 4px;
+  border: solid 4px #006666;
+  background: #ffffff;
+}

@@ -1,0 +1,13 @@
+<div class="panelCanvas">
+  <div style="position: relative; max-width: 1600px; max-height: 700px; overflow: scroll;" #containerRef>
+    <canvas width="0" height="0" #canvasRef></canvas>
+    @if (menuVisible()) {
+      <app-floor-plans-context-menu [ngStyle]="{ 'left': contextmenuX(), 'top': contextmenuY() }"
+                    [marker]="marker()" (clickitem)="onMenuItemSelected($event)">
+      </app-floor-plans-context-menu>
+    }
+    <ng-content></ng-content>
+  </div>
+  <app-floor-plans-bar [options]="options" (barcommand)="onBarCommand($event)">
+  </app-floor-plans-bar>
+</div>

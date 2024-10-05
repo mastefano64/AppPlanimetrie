@@ -1,0 +1,64 @@
+<div class="pagecontainer">
+  <h2>Page-8</h2>
+
+  <div class="panelButtons">
+    <span>Zoom level: </span><span>{{ zoomLevel }}</span>&nbsp;
+    <mat-form-field class="selectfloorlans">
+      <mat-label>Planimetria</mat-label>
+      <mat-select name="selectfloorlans" [ngModel]="selectedfloorplans"
+             (selectionChange)="onSelectedFloorPlans($event)">
+        <mat-option [value]="'planimetria2'">Planimetria2</mat-option>
+        <mat-option [value]="'planimetria3'">Planimetria3</mat-option>
+      </mat-select>
+    </mat-form-field>&nbsp;
+    <mat-form-field class="selectcontentposition">
+      <mat-label>Posiziona</mat-label>
+      <mat-select name="gotocontentposition" [ngModel]="gotocontentposition"
+             (selectionChange)="onGotoContentPosition($event)">
+        <mat-option [value]="'1-1'">1-1</mat-option>
+        <mat-option [value]="'9-1'">9-1</mat-option>
+        <mat-option [value]="'18-1'">18-1</mat-option>
+
+        <mat-option [value]="'1-9'">1-9</mat-option>
+        <mat-option [value]="'9-9'">9-9</mat-option>
+        <mat-option [value]="'18-9'">18-9</mat-option>
+
+        <mat-option [value]="'3-3'">3-3</mat-option>
+        <mat-option [value]="'3-7'">3-7</mat-option>
+        <mat-option [value]="'5-4.6'">5-4.6</mat-option>
+        <mat-option [value]="'5-2.3'">5-2.3</mat-option>
+
+        <mat-option [value]="'9-6'">9-6</mat-option>
+      </mat-select>
+    </mat-form-field><br>
+    <mat-checkbox color="primary" [ngModel]="showBottomAxisX" (change)="onShowBottomAxisX($event)">
+      showBottomAxisX
+    </mat-checkbox>&nbsp;
+    <mat-checkbox color="primary" [ngModel]="showLeftAxisY" (change)="onShowLeftAxisY($event)">
+      showLeftAxisY
+    </mat-checkbox>&nbsp;
+    <mat-checkbox color="primary" [ngModel]="showTopAxisX" (change)="onShowTopAxisX($event)">
+      showTopAxisX
+    </mat-checkbox>&nbsp;
+    <mat-checkbox color="primary" [ngModel]="showRightAxisY" (change)="onShowRightAxisY($event)">
+      showRightAxisY
+    </mat-checkbox>&nbsp;
+    <mat-checkbox color="primary" [ngModel]="showGridOverlay" (change)="onShowGridOverlay($event)">
+      showGridOverlay
+    </mat-checkbox>&nbsp;
+  </div>
+
+  <app-floor-plans-map [options]="options" #floorplans>
+    <div id="overlay1" class="panelOverlay">
+      overlay-1<br>
+      Value-11: {{ v11() }}<br>
+      Value-12: {{ v12() }}<br>
+    </div>
+
+    <div id="overlay2" class="panelOverlay">
+      overlay-2<br>
+      Value-21: {{ v21() }}<br>
+      Value-22: {{ v12() }}<br>
+    </div>
+  </app-floor-plans-map>
+</div>

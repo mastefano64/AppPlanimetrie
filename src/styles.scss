@@ -1,0 +1,232 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.fontColorR {
+  font-weight: normal;
+  color: red;
+}
+
+.fontColorG {
+  font-weight: bold;
+  color: green;
+}
+
+.fontColorGray {
+  color: grey;
+}
+
+.myformcontrol {
+  border: solid 1px #000000 !important;
+}
+
+mat-dialog-actions.borderTop {
+  border-top: solid 1px lightgrey;
+}
+
+mat-list-item.disabled {
+  cursor: not-allowed !important;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+mat-nav-list a.active-link {
+  background: #d2edfd;
+}
+
+mat-header-cell.matcellauto, mat-cell.matcellauto {
+  flex: 0 1 auto;
+  padding: 0px 4px 0px 4px;
+}
+
+// .pagecontainer {
+//   display: flex;
+// }
+
+.pagecontainer {
+  margin: 30px 15px 40px 15px;
+}
+
+.pagecontainer1 {
+  margin: 20px 15px 30px 15px;
+}
+
+.pagecontainer2 {
+  margin: 10px 15px 20px 15px;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.mat-sidenav {
+  width: 250px;
+  box-shadow: 3px 0 6px rgba(0,0,0,.24);
+}
+
+.navTitleCommandBar {
+  width: 100%;
+}
+
+  .navTitleCommandBar .navTitle {
+    display: inline-block;
+    width: 80%;
+    padding-left: 20px;
+  }
+
+.loginlogoutPanel {
+  display: inline-block;
+}
+
+  .loginlogoutPanel a {
+    color:#ffffff;
+  }
+
+.text-align-center {
+  text-align: center;
+}
+
+.form-center {
+  margin: 0px auto 0px auto;
+}
+
+.form-container-with-row mat-form-field {
+  display: block;
+}
+
+.form-container100 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+  .form-container100 > * {
+    width: 100%;
+  }
+
+.form-container50 {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+  .form-container50 > * {
+    width: 100%;
+  }
+
+  .form-container50center {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    width: 50%;
+  }
+
+    .form-container50center > * {
+      width: 100%;
+    }
+
+  .form-container75center {
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    width: 75%;
+  }
+
+    .form-container75center > * {
+      width: 100%;
+    }
+
+.form-direction-column {
+  flex-direction: column;
+}
+
+.form-direction-row {
+  flex-direction: row;
+}
+
+.form-padding > mat-form-field, .form-padding > div {
+  padding: 0px 5px 0px 5px;
+}
+
+.form-control.ng-touched.ng-invalid {
+  border: 2px solid red;
+}
+
+.messagebox p {
+  text-align: left;
+}
+
+.messagebox span {
+  display: block;
+}
+
+.mat-dialog-title {
+  height: 63px !important;
+  margin: -24px -24px 24px -24px !important;
+  padding: 14px !important;
+  font-size: 20px;
+  background: #1f3c75;
+  color: #ffffff;
+}
+
+ngx-datatable .rowSelected {
+  background: #d2edfd;
+}
+
+.panelGeneric1 {
+  font-size: 16px;
+}
+
+.panelGeneric1 .panelHeadLabel {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.panelGeneric1 .panelLabel {
+  font-size: 16px;
+  color: #0056b3;
+}
+
+.panelGeneric1 .panelText {
+  font-size: 14px;
+}
+
+.panelGeneric2 {
+  font-size: 14px;
+}
+
+.panelGeneric2 .panelHeadLabel {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.panelGeneric2 .panelLabel {
+  font-size: 14px;
+  color: #0056b3;
+}
+
+.panelGeneric2 .panelText {
+  font-size: 12px;
+}
+
+.panelGeneric3 {
+  font-size: 12px;
+  color: #0056b3;
+}
+
+.pagecontainer {
+  margin: 20px;
+}

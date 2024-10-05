@@ -1,0 +1,28 @@
+:host   {
+  display: block;
+  position: absolute;
+  width: 200px;
+  padding: 2px;
+  border: solid 1px #b1b1b1;
+  background: #ffffff;
+  z-index: 9999;
+
+}
+
+.menuContainer {
+  z-index: 9999;
+}
+
+.menuItem {
+  line-height: 35px;
+  padding: 0px 4px 0px 4px;
+  border: solid 1px #f6f6f6;
+  background: #ececec;
+  color: #000000;
+
+}
+
+.menuItem:hover {
+  background: #a6a6a6;
+  color: #ffffff;
+}

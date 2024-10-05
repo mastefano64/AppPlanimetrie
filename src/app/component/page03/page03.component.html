@@ -1,0 +1,32 @@
+<div class="pagecontainer">
+  <h2>Page-3</h2>
+
+  <div class="panelButtons">
+    <span>Zoom level: </span><span>{{ zoomLevel }}</span>&nbsp;
+    <button mat-flat-button color="primary" (click)="onZoomIncrement()">+</button>&nbsp;
+    <button mat-flat-button color="primary" (click)="onZoomDecrement()">-</button>&nbsp;
+    <button mat-flat-button color="primary" (click)="onResetZoom()">reset</button>&nbsp;
+    <mat-form-field class="selectfloorlans">
+      <mat-label>Planimetria</mat-label>
+      <mat-select name="selectfloorlans" [ngModel]="selectedfloorplans"
+             (selectionChange)="onSelectedFloorPlans($event)">
+        <mat-option [value]="'planimetria2'">Planimetria2</mat-option>
+        <mat-option [value]="'planimetria3'">Planimetria3</mat-option>
+      </mat-select>
+    </mat-form-field>&nbsp;
+    <mat-form-field class="selectcontentposition">
+      <mat-label>Planimetria</mat-label>
+      <mat-select name="selectcontentposition" [ngModel]="selectcontentposition"
+             (selectionChange)="onSelectedContentPosition($event)">
+        <mat-option [value]="'top-left'">top-left</mat-option>
+        <mat-option [value]="'top-right'">top-right</mat-option>
+        <mat-option [value]="'bottom-left'">bottom-left</mat-option>
+        <mat-option [value]="'bottom-right'">bottom-right</mat-option>
+        <mat-option [value]="'center'">center</mat-option>
+      </mat-select>
+    </mat-form-field>&nbsp;
+  </div>
+
+  <app-floor-plans-map [options]="options" #floorplans>
+  </app-floor-plans-map>
+</div>

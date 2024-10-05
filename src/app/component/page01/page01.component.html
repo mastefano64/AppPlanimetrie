@@ -1,0 +1,12 @@
+<div class="pagecontainer">
+  <h2>Page-1</h2>
+
+  <div class="panelButtons">
+    <button mat-flat-button color="primary" (click)="onZoomIncrement()">+</button>&nbsp;
+    <button mat-flat-button color="primary" (click)="onZoomDecrement()">-</button>&nbsp;
+    <button mat-flat-button color="primary" (click)="onResetZoom()">reset</button>&nbsp;
+  </div>
+
+  <app-floor-plans-map [options]="options" #floorplans>
+  </app-floor-plans-map>
+</div>

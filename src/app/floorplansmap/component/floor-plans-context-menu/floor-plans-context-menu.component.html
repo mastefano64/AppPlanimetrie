@@ -1,0 +1,9 @@
+@if (marker) {
+  <div class="menuContainer">
+    @for (item of marker().contextMenu; track item.id) {
+      <div class="menuItem" (click)="onClickMenuItem(item, marker())">
+        {{ item.name }}
+      </div>
+    }
+  </div>
+}

@@ -1,0 +1,87 @@
+.panelButtons {
+  text-align: center;
+  padding: 10px;
+}
+
+.panelFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay1 {
+  top: 0px;
+  left: 0px;
+  display: none;
+  position: absolute;
+  width: 240px;
+  height: 140px;
+  padding: 4px;
+  border: solid 4px #006666;
+  background: #ffffff;
+}
+
+#overlay2 {
+  top: 0px;
+  left: 0px;
+  display: none;
+  position: absolute;
+  width: 240px;
+  height: 140px;
+  padding: 4px;
+  border: solid 4px #006666;
+  background: #ffffff;
+}
+
+.containerGauge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+:host ::ng-deep mwl-gauge  {
+  width: 100px;
+  height: 100px;
+  display: block;
+  padding: 10px;
+}
+
+// ----------
+
+:host ::ng-deep mwl-gauge.gauge1 > .gauge > .dial  {
+  stroke: #eee;
+  stroke-width: 2;
+  fill: rgba(0, 0, 0, 0);
+}
+
+:host ::ng-deep  mwl-gauge.gauge1 > .gauge > .value  {
+  stroke: rgb(47, 227, 255);
+  stroke-width: 2;
+  fill: rgba(0, 0, 0, 0);
+}
+
+:host ::ng-deep mwl-gauge.gauge1 > .gauge > .value-text {
+  fill: rgb(47, 227, 255);
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+// ----------
+
+:host ::ng-deep mwl-gauge.gauge2 > .gauge > .dial  {
+  stroke: #334455;
+  stroke-width: 10;
+}
+
+:host ::ng-deep  mwl-gauge.gauge2 > .gauge > .value  {
+  stroke: orange;
+  stroke-dasharray: none;
+  stroke-width: 13;
+}
+
+:host ::ng-deep mwl-gauge.gauge2 > .gauge > .value-text {
+  fill: #ccc;
+  font-weight: 100;
+  font-size: 1em;
+}

@@ -10,7 +10,7 @@ Quando si parla di mappe geolocalizzate viene subito in mente l'accoppiata OpenL
 
 >Partendo da una planimetria in scala (per esempio) 19.20 metri x 10.96 metri e salvata come immagine 1920 pixel x 1096 pixel, dove ad ogni pixel corrisponde un cm, dopo aver renderizzato immagine all'interno di un canvas, ed inserito il canvas all'interno di un contenitore di opportune dimensioni (per permettere lo scroll dell'immagine), fornire all'utente una visione di mappa.<br><br>Come menzionato all'inizio, su questa mappa possono essere posizionati sia ancore RTLS/UWB, piuttosto che dei varchi RFID. La posizione di questi punti base è ovviamente statica/fissa. Ma grazie alle ancore RTLS/UWB, possiamo visualizzare eventuali oggetti in movimento all'interno dell'area di copertura delle ancore. IMPORTANTE: la parte di rilevazione RTLS/UWB non è  presente progetto, viene quindi utilizzato un mock contenuto nella classe "*ManagerTestFloorPlansService*". In un contesto reale ci sarà invece un servizio che rileva gli oggetti in movimento chiamati "punti", e li mostra sulla mappa.
 
-<span style="color:red">IMPORTANTE. Attualmente ad ogni pixel corrisponde un cm. Pertanto se abbiamo una planimetria di 19.20 metri x 10.96 metri deve essere salvata come immagine di 1920 pixel x 1096 pixel!</span>
+**IMPORTANTE. Attualmente ad ogni pixel corrisponde un cm. Pertanto se abbiamo una planimetria di 19.20 metri x 10.96 metri deve essere salvata come immagine di 1920 pixel x 1096 pixel!**
 
 ![AppPlanimetrie](/screenshot/image1.png)
 

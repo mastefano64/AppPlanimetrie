@@ -71,7 +71,6 @@ export class Page01Component implements OnInit, AfterViewInit, OnDestroy {
     this.service.pointSubjectAsync.subscribe(result => {
       this.#floorplans.set(result);
       this.floorplans.drawFloorPlanMarker(result);
-     //  this.floorplans.drawFloorPlanTest(result);
     });
   }
 

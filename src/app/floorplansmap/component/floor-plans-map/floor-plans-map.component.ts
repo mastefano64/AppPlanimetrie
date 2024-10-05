@@ -147,10 +147,6 @@ export class FloorPlansMapComponent implements IFloorPlansMap,  OnInit, OnDestro
     this.fpr.resetContentPosition();
   }
 
-  showOverlayAtPosition(id: string, elem: any, position: string): void {
-    this.fpr.showOverlayAtPosition(id, elem, position);
-  }
-
   zoomFloorPlanFit(): void {
     this.fpr.zoomFloorPlanFit();
   }

@@ -2,19 +2,19 @@
 
 ### Introduzione
 
-Quando si parla di mappe geolocalizzate viene subito in mente l'accoppiata OpenLayer/GPS (per esempio). Questo sistema funziona bene in spazi aperti, ma perde di precesione in spazi chiusi. In un contesto simile (spazi chiusi) entra in gioco la tecnologia RTLS/UWB (lasciando perdere i vari dettagli), da un punto di vista tecnico RTLS/UWB si avvale di una banda spettrale estremamente elevata che sfrutta una pluralità di frequenze dell’ordine dei GHz (generalmente fra i 3 e i 7). Generalmente viene preso in considerazione il ToF (Time of Flight, tempo di “volo” del segnale) ovvero il tempo necessario al segnale radio emesso dal tag per raggiungere l’ancora di riferimento (generalmente esistono 3 o più ancore di riferimento e viene fatta una trilaterazione). In questo modo si stabilisce la posizione di un oggetto dotato di TAG in "metri", invece di coordinate geografiche.
+Quando si parla di mappe geolocalizzate viene subito in mente l'accoppiata OpenLayer/GPS (per esempio), questo sistema funziona bene in spazi aperti, ma perde di precesione in spazi chiusi. In un contesto simile (spazi chiusi) entra in gioco la tecnologia RTLS/UWB (lasciando perdere i vari dettagli), da un punto di vista tecnico RTLS/UWB si avvale di una banda spettrale estremamente elevata che sfrutta una pluralità di frequenze dell’ordine dei GHz (generalmente fra i 3 e i 7). Generalmente viene preso in considerazione il ToF (Time of Flight, tempo di “volo” del segnale) ovvero il tempo necessario al segnale radio emesso dal tag per raggiungere l’ancora di riferimento (se esistono 3 o più ancore di riferimento e viene fatta una trilaterazione). In questo modo si stabilisce la posizione di un oggetto dotato di TAG, e la posizione è espressa in "metri", invece che in coordinate geografiche.
 
-#### <center>Pertanto trovandoci in un abiente chiuso avremmo la necessità di usare delle planimetrie invece delle classiche mappe che usano coordinate geografiche.</center> ####
+#### <center>Pertanto trovandoci in un abiente chiuso abbiamo la necessità di usare delle planimetrie invece delle classiche mappe che usano coordinate geografiche (poi esistono anche le eccezzioni).</center> ####
 
 ### Progetto
 
->Partendo da una planimetria in scala (per esempio) 19.20 metri x 10.96 metri e salvata come immagine 1920 pixel x 1096 pixel, dove ad ogni pixel corrisponde un cm, dopo aver renderizzato immagine all'interno di un canvas, ed inserito il canvas all'interno di un contenitore di opportune dimensioni (per permettere lo scroll dell'immagine), fornire all'utente una visione di mappa.<br><br>Come menzionato all'inizio, su questa mappa possono essere posizionati sia ancore RTLS/UWB, piuttosto che dei varchi RFID. La posizione di questi punti base è ovviamente statica/fissa. Ma grazie alle ancore RTLS/UWB, possiamo visualizzare eventuali oggetti in movimento all'interno dell'area di copertura delle ancore. La parte di rilevazione RTLS/UWB non è  presente progetto, viene quindi utilizzato un mock contenuto nella classe "*ManagerTestFloorPlansService*". In un contesto reale ci sarà invece un servizio che rileva gli oggetti in movimento chiamati "punti", e li mostra sulla mappa.
+>Partendo da una planimetria in scala (per esempio) 19.20 metri x 10.96 metri e salvata come immagine 1920 pixel x 1096 pixel, dove ad ogni pixel corrisponde un cm. Dopo aver renderizzato immagine all'interno di un canvas, ed inserito il canvas all'interno di un contenitore di opportune dimensioni (per permettere lo scroll dell'immagine), è possibile fornire all'utente una visione scrollabile.<br><br>Come menzionato all'inizio, su questa mappa possono essere posizionati sia ancore RTLS/UWB, piuttosto che dei varchi RFID. La posizione di questi punti base è ovviamente statica/fissa. Ma grazie alle ancore RTLS/UWB, possiamo visualizzare eventuali oggetti in movimento all'interno dell'area di copertura delle ancore. La parte di rilevazione RTLS/UWB non è  presente progetto, viene quindi utilizzato un mock contenuto nella classe "*ManagerTestFloorPlansService*". In un contesto reale ci sarà invece un servizio che rileva gli oggetti in movimento chiamati "punti", e li mostra sulla mappa.
 
 **IMPORTANTE. Attualmente ad ogni pixel corrisponde un cm. Pertanto se abbiamo una planimetria di 19.20 metri x 10.96 metri deve essere salvata come immagine di 1920 pixel x 1096 pixel!**
 
 ![AppPlanimetrie](/screenshot/image1.png)
 
-`I vari punti (siano ancore, varchi o semplici punti), sono definiti mediante la classe "FloorPlansPoint". Quando i punti vengono caricati, viene creato un oggetto di tipo "Marker" e vengono calcolate le rispettive coordinate in pixel (noi esternamente le esprimiamo in metri, visto che la planimetria è in metri). Le coordinate in pixel vengono ricalcolate ogno volta che si effettua uno zoom o un operazione analoga. L'oggetto "Marker" viene poi passato ai vari eventi di callback se abilitati!`
+`I vari punti (siano ancore, varchi o semplici punti), sono definiti mediante la classe "FloorPlansPoint". Quando i punti vengono caricati, viene creato un oggetto di tipo "Marker" e vengono calcolate le rispettive coordinate in pixel (noi esternamente le esprimiamo in metri, visto che la planimetria è in metri). Le coordinate in pixel vengono ricalcolate ogni volta che si effettua uno zoom o un operazione analoga. L'oggetto "Marker" viene poi passato ai vari eventi di callback se abilitati!`
 
 <br>
 
@@ -135,13 +135,13 @@ export class Page01Component implements OnInit, AfterViewInit, OnDestroy {
 ```
 
 Tramite le "*FloorPlansOptions*" è possibile definire le opzioni della planimetria (assi, tool-bar, ancore, varchi e punti).
-Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito associate a sensori 'Rtls'. I varchi sono di solito associati a sensori 'Rfid'. I punti possono essere statici o dinamici. I punti dinamici rappresentano un rilevamanto di uno o più sensori 'Rtls' (o possono essere inviati da sistema). I punti statici sono punti fissi. Oltre a definire il tipo di punto tramite la proprietà 'type' dell oggetto 'FloorPlansPoint', è anche possibile definire un tipo di movimento tramite la proprietà 'typeMovement': 'enter', 'inside', 'leave', 'fix'. 'Enter' viene usato quando un punto entra nella planimetria. 'Leave' viene usato quando un punto esce nella planimetria. 'Inside' viene usato quando un punto si muove nella planimetria. 'Fix' viene usato quando un punto è fisso nella planimetria (fix e inside possono essere equivalenti). Da notare che il codice base del progetto non usa direttamente 'typeMovement', ma verrà invece utilizzato dal servizio che riceve le notifiche e le inserisce poi nella struttura dati che verrà poi passata alla planimetria. I punti (ancore, varchi e punti) possono anche avere associati dei metadati presenti nell'oggetto "*PointMetadata*".
+Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito associate a sensori 'Rtls'. I varchi sono di solito associati a sensori 'Rfid'. I punti possono essere statici o dinamici. I punti dinamici rappresentano un rilevamanto di uno o più sensori 'Rtls' (o possono essere inviati da sistema). I punti statici sono punti fissi. Oltre a definire il tipo di punto tramite la proprietà 'type' dell'oggetto 'FloorPlansPoint', è anche possibile definire un tipo di movimento tramite la proprietà 'typeMovement': 'enter', 'inside', 'leave', 'fix'. 'Enter' viene usato quando un punto entra nella planimetria. 'Leave' viene usato quando un punto esce nella planimetria. 'Inside' viene usato quando un punto si muove nella planimetria. 'Fix' viene usato quando un punto è fisso nella planimetria (fix e inside possono essere equivalenti). Da notare che il codice base del progetto non usa direttamente 'typeMovement', è utilizzato invece dal servizio che riceve le notifiche e le inserisce poi nella struttura dati che verrà poi passata alla planimetria. I punti (ancore, varchi e punti) possono avere dei metadati associati presenti nell'oggetto "*PointMetadata*". Tramite questi metadati vengono creati gli Overlay che mostrano uno o più valori in tempo reale..
 
 ### Metodi del componente FloorPlansMapComponent - app-floor-plans-map
 
 **createFloorPlan(imageplans: HTMLImageElement, options: FloorPlansOptions)**: Crea una mappa, passando l'immagine letta e le opzioni.
 
-**addOverlay(id: string, position: string)**: Aggiunge un oberlay alla mappa.
+**addOverlay(id: string, position: string)**: Aggiunge un overlay alla mappa.
 
 **enableBottomAxisX(value: boolean)**: Abilita l'asse delle X posizionato Bottom.
 
@@ -153,11 +153,11 @@ Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito ass
 
 **enableGridOverlay(value: boolean)**: Abilita la grid overlay.
 
-**drawFloorPlanMarker(listp: FloorPlansPoint[])**: Disegna la mappa, di solito ogni volta che scatta una notifica. 
+**drawFloorPlanMarker(listp: FloorPlansPoint[])**: Disegna la mappa, all'inizio e ogni volta che scatta una notifica. 
 
 **setContentPosition(position: string)**: Allinea la mappa alla posizione specificata (top-left, top-right, bottom-left, bottom-right',center).
 
-**gotoContentPosition(position: string)**: Vai alla cposizione specificata sulla mappa (posizione in metri).
+**gotoContentPosition(position: string)**: Vai alla posizione specificata sulla mappa (posizione in metri).
 
 **resetContentPosition()**: Resetta la posizione specificata.
 
@@ -171,19 +171,11 @@ Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito ass
 
 ### FloorPlansOptions
 
-Tramite le "*FloorPlansOptions*" è possibile definire le opzioni della planimetria (assi, tool-bar, ancore, varchi e punti). Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito associate a sensori 'Rtls'. I varchi sono di solito associati a sensori 'Rfid'. I punti possono essere statici o dinamici. I punti dinamici rappresentano un rilevamanto di uno o più sensori 'Rtls' (o possono essere inviati da sistema). I punti statici sono punti fissi.
+Tramite le "*FloorPlansOptions*" è possibile definire le opzioni della planimetria (assi, tool-bar, ancore, varchi e punti). Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito associate a sensori 'Rtls'. I varchi sono di solito associati a sensori 'Rfid'. I punti possono essere statici o dinamici. I punti dinamici rappresentano un rilevamanto di uno o più sensori 'Rtls' (o possono essere inviati dal sistema). I punti statici sono punti fissi.
 
-**widthMeters**: Larghezza in metri della planimeria. (*number - required*).
+**widthMeters**: Larghezza in metri della planimetria. (*number - required*).
 
 **heightMeters**: Altezza in metri della planimetria. (*number - required*).
-
-<br>
-
-**gridOverlay.GridOverlay.visibleGridOverlay**: Grif overlay visibile. (*boolean - default: false*).
-
-**rightAxisY.RightAxisY.lineStrokeColor**: StrokeColor. (*string - default: black*).
-
-**rightAxisY.RightAxisY.lineWidth**: Width. (*number - default: 1*).
 
 <br>
 
@@ -215,11 +207,11 @@ iniziale. (*function - optional*).
 
 **anchorRtlsUnselectedColor**: Color quando un 'ancora' è nello stato 'unselected'. (*string - default: #ff0000*).
 
-**anchorRtlsUnselectedGeometry**:?: Geometria associata ad un 'ancora' quando è nello stato 'unselected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**anchorRtlsUnselectedGeometry**: Geometria associata ad un 'ancora' quando è nello stato 'unselected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
 
-**anchorRtlsUnselectedRadius**: Radius della geometria quando l'ancora è nello stato 'unselected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**anchorRtlsUnselectedRadius**: Radius della geometria quando l'ancora è nello stato 'unselected' (circle, square, rhombus,     triangle). (*number - default: 15*).
 
-**anchorRtlsUnselectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*string*).;
+**anchorRtlsUnselectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*string*).
 
 **anchorRtlsUnselectedIconWidth**: Larghezza dell'icona associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*number - default: 30*).
 
@@ -227,11 +219,11 @@ iniziale. (*function - optional*).
 
 **anchorRtlsSelectedColor**: Color quando un 'ancora' è nello stato 'selected'. (*string - default: #ff0000*).
 
-**anchorRtlsSelectedGeometry**:?: Geometria associata ad un 'ancora' quando è nello stato 'selected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**anchorRtlsSelectedGeometry**: Geometria associata ad un 'ancora' quando è nello stato 'selected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
 
-**anchorRtlsSelectedRadius**: Radius della geometria quando l'ancora è nello stato 'selected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**anchorRtlsSelectedRadius**: Radius della geometria quando l'ancora è nello stato 'selected' (circle, square, rhombus,     triangle). (*number - default: 15*).
 
-**anchorRtlsSelectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'selected' (icon). (*string*).;
+**anchorRtlsSelectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'selected' (icon). (*string*).
 
 **anchorRtlsSelectedIconWidth**: Larghezza dell'icona associata ad un 'ancora' quando è nello stato 'selected' (icon). (*number - default: 30*).
 
@@ -249,11 +241,11 @@ iniziale. (*function - optional*).
 
 **transitRfidUnselectedColor**: Color quando un 'varco rfid' è nello stato 'unselected'. (*string - default: #ff0000*).
 
-**transitRfidUnselectedGeometry**:?: Geometria associata ad un 'varco rfid 'quando è nello stato 'unselected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**transitRfidUnselectedGeometry**: Geometria associata ad un 'varco rfid 'quando è nello stato 'unselected' (circle, square, rhombus,  triangle, icon). (*string - default: circle*).
 
-**transitRfidUnselectedRadius**: Radius della geometria quando il 'varco rfid' è nello stato 'unselected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**transitRfidUnselectedRadius**: Radius della geometria quando il 'varco rfid' è nello stato 'unselected' (circle, square, rhombus,    triangle). (*number - default: 15*).
 
-**transitRfidUnselectedPathicon**: Pathicon dell'immagine associata ad un 'varco rfid' quando è nello stato 'unselected' (icon). (*string*).;
+**transitRfidUnselectedPathicon**: Pathicon dell'immagine associata ad un 'varco rfid' quando è nello stato 'unselected' (icon). (*string*).
 
 **transitRfidUnselectedIconWidth**: Larghezza dell'icona associata ad un 'varco rfid' quando è nello stato 'unselected' (icon). (*number - default: 30*).
 
@@ -261,15 +253,15 @@ iniziale. (*function - optional*).
 
 **transitRfidSelectedColor**: Color quando un 'varco rfid' è nello stato 'selected'. (*string - default: #ff0000*).
 
-**transitRfidSelectedGeometry**:?: Geometria associata ad un 'varco rfid' quando è nello stato 'selected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**transitRfidSelectedGeometry**: Geometria associata ad un 'varco rfid' quando è nello stato 'selected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
 
-**transitRfidSelectedRadius**: Radius della geometria quando il 'varco rfid' è nello stato 'selected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**transitRfidSelectedRadius**: Radius della geometria quando il 'varco rfid' è nello stato 'selected' (circle, square, rhombus,     triangle). (*number - default: 15*).
 
-**transitRfidSelectedPathicon**: Pathicon dell'immagine associata ad un 'varco rfid' quando è nello stato 'selected' (icon). (*string*).;
+**transitRfidSelectedPathicon**: Pathicon dell'immagine associata ad un 'varco rfid' quando è nello stato 'selected' (icon). (*string*).
 
 **transitRfidSelectedIconWidth**: Larghezza dell'icona associata ad un 'varco rfid' quando è nello stato 'selected' (icon). (*number - default: 30*).
 
-**transitRfidUSelectedIconHeight**: Altezza dell'icona associata ad un 'varco rfid' quando è nello stato 'selected' (icon). (*number - default: 30*).
+**transitRfidSelectedIconHeight**: Altezza dell'icona associata ad un 'varco rfid' quando è nello stato 'selected' (icon). (*number - default: 30*).
 
 **transitRfidPoint**: Lista 'varchi rfid' da visualizzare, la lista è formata da un array di tipo "*FloorPlansPoint*". (*FloorPlansPoint - default: []*).
 
@@ -283,11 +275,11 @@ iniziale. (*function - optional*).
 
 **pointUnselectedColor**: Color quando un 'punto' è nello stato 'unselected'. (*string - default: #ff0000*).
 
-**pointUnselectedGeometry**:?: Geometria associata ad un 'punto' quando è nello stato 'unselected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**pointUnselectedGeometry**: Geometria associata ad un 'punto' quando è nello stato 'unselected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
 
-**pointUnselectedRadius**: Radius della geometria quando un punto è nello stato 'unselected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**pointUnselectedRadius**: Radius della geometria quando un punto è nello stato 'unselected' (circle, square, rhombus, triangle). (*number - default: 15*).
 
-**pointUnselectedPathicon**: Pathicon dell'immagine associata ad un 'punto' quando è nello stato 'unselected' (icon). (*string*).;
+**pointUnselectedPathicon**: Pathicon dell'immagine associata ad un 'punto' quando è nello stato 'unselected' (icon). (*string*).
 
 **pointUnselectedIconWidth**: Larghezza dell'icona associata ad un 'punto' quando è nello stato 'unselected' (icon). (*number - default: 30*).
 
@@ -295,11 +287,11 @@ iniziale. (*function - optional*).
 
 **pointSelectedColor**: Color quando un 'punto' è nello stato 'selected'. (*string - default: #ff0000*).
 
-**pointSelectedGeometry**:?: Geometria associata ad un 'punto' quando è nello stato 'selected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**pointSelectedGeometry**: Geometria associata ad un 'punto' quando è nello stato 'selected' (circle, square, rhombus, triangle, icon). (*string - default: circle*).
 
-**pointSelectedRadius**: Radius della geometria quando un punto è nello stato 'selected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**pointSelectedRadius**: Radius della geometria quando un punto è nello stato 'selected' (circle, square, rhombus, triangle). (*number - default: 15*).
 
-**pointSelectedPathicon**: Pathicon dell'immagine associata ad un 'punto' quando è nello stato 'selected' (icon). (*string*).;
+**pointSelectedPathicon**: Pathicon dell'immagine associata ad un 'punto' quando è nello stato 'selected' (icon). (*string*).
 
 **pointSelectedIconWidth**: Larghezza dell'icona associata ad un 'punto' quando è nello stato 'selected' (icon). (*number - default: 30*).
 
@@ -325,7 +317,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**bottomAxisX.BottomAxisX.visibleBottomAxisX**: Asse X top visibile. (*boolean - default: false*).
+**bottomAxisX.BottomAxisX.visibleBottomAxisX**: Asse X bottom visibile. (*boolean - default: false*).
 
 **bottomAxisX.BottomAxisX.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -337,7 +329,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**leftAxisY.LeftAxisY.visibleLeftAxisY**: Asse X top visibile. (*boolean - default: false*).
+**leftAxisY.LeftAxisY.visibleLeftAxisY**: Asse Y left visibile. (*boolean - default: false*).
 
 **leftAxisY.LeftAxisY.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -349,7 +341,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**rightAxisY.RightAxisY.visibleRightAxisY**: Asse X top visibile. (*boolean - default: false*).
+**rightAxisY.RightAxisY.visibleRightAxisY**: Asse Y right visibile. (*boolean - default: false*).
 
 **rightAxisY.RightAxisY.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -358,6 +350,10 @@ iniziale. (*function - optional*).
 **rightAxisY.RightAxisY.linefillColor**: FillColor. (*string - default: black*).
 
 **rightAxisY.RightAxisY.lineFont**: Font. (*string - default: 15px Arial*).
+
+<br>
+
+**gridOverlay.GridOverlay.visibleGridOverlay**: Grid overlay visibile. (*boolean - default: false*).
 
 ### FloorPlansPoint
 

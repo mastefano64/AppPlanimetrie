@@ -1,28 +1,28 @@
 ## AppPlanimetrie
 
-### Introduzione
+### Introduction
 
-Quando si parla di mappe geolocalizzate viene subito in mente l'accoppiata OpenLayer/GPS (per esempio), questo sistema funziona bene in spazi aperti, ma perde di precesione in spazi chiusi. In un contesto simile (spazi chiusi) entra in gioco la tecnologia RTLS/UWB (lasciando perdere i vari dettagli), da un punto di vista tecnico RTLS/UWB si avvale di una banda spettrale estremamente elevata che sfrutta una pluralità di frequenze dell’ordine dei GHz (generalmente fra i 3 e i 7). Generalmente viene preso in considerazione il ToF (Time of Flight, tempo di “volo” del segnale) ovvero il tempo necessario al segnale radio emesso dal tag per raggiungere l’ancora di riferimento (se esistono 3 o più ancore di riferimento e viene fatta una trilaterazione). In questo modo si stabilisce la posizione di un oggetto dotato di TAG, e la posizione è espressa in "metri", invece che in coordinate geografiche.
+When discussing geolocated maps, the combination of OpenLayers and GPS (for example) immediately comes to mind. This system works well in open spaces but loses precision in enclosed spaces. In a similar context (enclosed spaces), RTLS/UWB technology comes into play (leaving aside the various details). From a technical standpoint, RTLS/UWB utilizes an extremely high spectral band that exploits a plurality of frequencies in the GHz range (generally between 3 and 7). Typically, the Time of Flight (ToF) is considered, i.e., the time it takes for the radio signal emitted by the tag to reach the reference anchor (if there are 3 or more reference anchors, trilateration is performed). In this way, the position of an object equipped with a tag is established, and the position is expressed in "meters" rather than geographic coordinates.
 
-#### <center>Pertanto trovandoci in un abiente chiuso abbiamo la necessità di usare delle planimetrie invece delle classiche mappe che usano coordinate geografiche (poi esistono anche le eccezzioni).</center> ####
+#### <center>Therefore, when in a closed environment, we need to use floor plans instead of the classic maps that use geographic coordinates (although there are exceptions).</center> ####
 
-### Progetto
+### Project
 
->Partendo da una planimetria in scala (per esempio) 19.20 metri x 10.96 metri e salvata come immagine 1920 pixel x 1096 pixel, dove ad ogni pixel corrisponde un cm. Dopo aver renderizzato immagine all'interno di un canvas, ed inserito il canvas all'interno di un contenitore di opportune dimensioni (per permettere lo scroll dell'immagine), è possibile fornire all'utente una visione scrollabile.<br><br>Come menzionato all'inizio, su questa mappa possono essere posizionati sia ancore RTLS/UWB, piuttosto che dei varchi RFID. La posizione di questi punti base è ovviamente statica/fissa. Ma grazie alle ancore RTLS/UWB, possiamo visualizzare eventuali oggetti in movimento all'interno dell'area di copertura delle ancore. La parte di rilevazione RTLS/UWB non è  presente progetto, viene quindi utilizzato un mock contenuto nella classe "*ManagerTestFloorPlansService*". In un contesto reale ci sarà invece un servizio che rileva gli oggetti in movimento chiamati "punti", e li mostra sulla mappa.
+>Starting from a scaled floor plan (for example) 19.20 meters x 10.96 meters and saved as a 1920 pixel x 1096 pixel image, where each pixel corresponds to one centimeter. After rendering the image within a canvas and inserting the canvas into a container of appropriate dimensions (to allow scrolling of the image), a scrollable view can be provided to the user.<br> As mentioned at the beginning, both RTLS/UWB anchors and RFID gateways can be positioned on this map. The position of these base points is obviously static/fixed. But thanks to the RTLS/UWB anchors, we can visualize any moving objects within the coverage area of the anchors. The RTLS/UWB detection part is not present in this project, so a mock is used within the "ManagerTestFloorPlansService" class. In a real context, there will instead be a service that detects moving objects called "points" and displays them on the map.
 
-**IMPORTANTE. Attualmente ad ogni pixel corrisponde un cm. Pertanto se abbiamo una planimetria di 19.20 metri x 10.96 metri deve essere salvata come immagine di 1920 pixel x 1096 pixel!**
+**IMPORTANT. Currently, each pixel corresponds to one centimeter. Therefore, if we have a floor plan of 19.20 meters x 10.96 meters, it must be saved as a 1920 pixel x 1096 pixel image!**
 
 ![AppPlanimetrie](/screenshot/image1.png)
 
-`I vari punti (siano ancore, varchi o semplici punti), sono definiti mediante la classe "FloorPlansPoint". Quando i punti vengono caricati, viene creato un oggetto di tipo "Marker" e vengono calcolate le rispettive coordinate in pixel (noi esternamente le esprimiamo in metri, visto che la planimetria è in metri). Le coordinate in pixel vengono ricalcolate ogni volta che si effettua uno zoom o un operazione analoga. L'oggetto "Marker" viene poi passato ai vari eventi di callback se abilitati!`
+`The various points (whether anchors, gateways, or simple points) are defined using the "FloorPlansPoint" class. When points are loaded, a "Marker" object is created and the respective pixel coordinates are calculated (we externally express them in meters, since the floor plan is in meters). The pixel coordinates are recalculated each time a zoom or similar operation is performed. The "Marker" object is then passed to various callback events if enabled.!`
 
 <br>
 
 ![AppPlanimetrie](/screenshot/image2.png)
 
-Nell'esempio di codice si può vedere che viene istanziato un "FloorPlansOptions" mediante il quale vengono definite le varie opzioni della mappa. Dopodichè all'interno del metodo "loadImage()", viene caricata l'immagine della mappa desiderata. Quando il caricamento è avvenuto, vengono richiamati i metodi: "createFloorPlan()" e "startPointFloorPlans()".
+In the code example, you can see that a "FloorPlansOptions" is instantiated, through which the various map options are defined. Then, within the "loadImage()" method, the desired map image is loaded. When the loading is complete, the "createFloorPlan()" and "startPointFloorPlans()" methods are called.
 
-Il servizio "ManagerTestFloorPlansService" espone un Observer, e mediante una subscribe() vengono notificati i cambiamenti. Ad ogni cambiamento viene invocato il metodo "drawFloorPlanMarker(result)". Vengono inoltre registrati gli eventi di callback desiderati.
+The "ManagerTestFloorPlansService" service exposes an Observer, and through a subscribe(), changes are notified. For each change, the "drawFloorPlanMarker(result)" method is invoked. The desired callback events are also registered.
 
 ```javascript
 import { Component, ViewChild, OnInit, AfterViewInit, OnDestroy, signal } from '@angular/core';
@@ -134,178 +134,175 @@ export class Page01Component implements OnInit, AfterViewInit, OnDestroy {
 }
 ```
 
-Tramite le "*FloorPlansOptions*" è possibile definire le opzioni della planimetria (assi, tool-bar, ancore, varchi e punti).
-Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito associate a sensori 'Rtls'. I varchi sono di solito associati a sensori 'Rfid'. I punti possono essere statici o dinamici. I punti dinamici rappresentano un rilevamanto di uno o più sensori 'Rtls' (o possono essere inviati da sistema). I punti statici sono punti fissi. Oltre a definire il tipo di punto tramite la proprietà 'type' dell'oggetto 'FloorPlansPoint', è anche possibile definire un tipo di movimento tramite la proprietà 'typeMovement': 'enter', 'inside', 'leave', 'fix'. 'Enter' viene usato quando un punto entra nella planimetria. 'Leave' viene usato quando un punto esce nella planimetria. 'Inside' viene usato quando un punto si muove nella planimetria. 'Fix' viene usato quando un punto è fisso nella planimetria (fix e inside possono essere equivalenti). Da notare che il codice base del progetto non usa direttamente 'typeMovement', è utilizzato invece dal servizio che riceve le notifiche e le inserisce poi nella struttura dati che verrà poi passata alla planimetria. I punti (ancore, varchi e punti) possono avere dei metadati associati presenti nell'oggetto "*PointMetadata*". Tramite questi metadati vengono creati gli Overlay che mostrano uno o più valori in tempo reale..
+Through the "FloorPlansOptions", it is possible to define the floor plan options (axes, tool-bar, anchors, gateways, and points). There are 3 types of 'points': anchors, gateways, and points. Anchors are usually associated with 'Rtls' sensors. Gateways are usually associated with 'Rfid' sensors. Points can be static or dynamic. Dynamic points represent a detection of one or more 'Rtls' sensors (or can be sent by a system). Static points are fixed points. In addition to defining the type of point through the 'type' property of the 'FloorPlansPoint' object, it is also possible to define a type of movement through the 'typeMovement' property: 'enter', 'inside', 'leave', 'fix'. 'Enter' is used when a point enters the floor plan. 'Leave' is used when a point exits the floor plan. 'Inside' is used when a point moves within the floor plan. 'Fix' is used when a point is fixed in the floor plan (fix and inside can be equivalent). Note that the base code of the project does not directly use 'typeMovement', instead it is used by the service that receives the notifications and then inserts them into the data structure that will then be passed to the floor plan. The points (anchors, gateways, and points) can have associated metadata present in the "PointMetadata" object. Through this metadata, Overlays are created that show one or more values in real time.
 
-### Metodi del componente FloorPlansMapComponent - app-floor-plans-map
+### Methods of the FloorPlansMapComponent component - app-floor-plans-map
 
-**createFloorPlan(imageplans: HTMLImageElement, options: FloorPlansOptions)**: Crea una mappa, passando l'immagine letta e le opzioni.
+**createFloorPlan(imageplans: HTMLImageElement, options: FloorPlansOptions)**: Creates a map, passing the loaded image and the options..
 
-**addOverlay(id: string, position: string)**: Aggiunge un overlay alla mappa.
+**addOverlay(id: string, position: string)**: Adds an overlay to the map..
 
-**enableBottomAxisX(value: boolean)**: Abilita l'asse delle X posizionato Bottom.
+**enableBottomAxisX(value: boolean)**: Enables the bottom-positioned X-axis.
 
-**enableLeftAxisY(value: boolean)**: Abilita l'asse delle Y posizionato Left.
+**enableLeftAxisY(value: boolean)**: Enables the left-positioned Y-axis.
 
-**enableTopAxisX(value: boolean)**: Abilita l'asse delle X posizionato Top.
+**enableTopAxisX(value: boolean)**:  Enables the top-positioned X-axis.
 
-**enableRightAxisY(value: boolean)**: Abilita l'asse delle Y posizionato Right.
+**enableRightAxisY(value: boolean)**: Enables the right-positioned Y-axis.
 
-**enableGridOverlay(value: boolean)**: Abilita la grid overlay.
+**enableGridOverlay(value: boolean)**: Enables the grid overlay.
 
-**drawFloorPlanMarker(listp: FloorPlansPoint[])**: Disegna la mappa, all'inizio e ogni volta che scatta una notifica. 
+**drawFloorPlanMarker(listp: FloorPlansPoint[])**: Draws the map, initially and whenever a notification is triggered.
 
-**setContentPosition(position: string)**: Allinea la mappa alla posizione specificata (top-left, top-right, bottom-left, bottom-right',center).
+**setContentPosition(position: string)**: Aligns the map to the specified position (top-left, top-right, bottom-left, bottom-right',center).
 
-**gotoContentPosition(position: string)**: Vai alla posizione specificata sulla mappa (posizione in metri).
+**gotoContentPosition(position: string)**: Goes to the specified position on the map (position in meters).
 
-**resetContentPosition()**: Resetta la posizione specificata.
+**resetContentPosition()**: Resets the specified position.
 
-**zoomFloorPlanFit()**: Fit la mappa (scompaiono le barre di scroll).
+**zoomFloorPlanFit()**: Fits the map to the container (scroll bars disappear).
 
-**zoomIncrement()**: Incrementa lo zoom.
+**zoomIncrement()**: Increases the zoom level.
 
-**zoomDecrement()**: decrementa lo zoom.
+**zoomDecrement()**: Decreases the zoom level.
 
-**resetZoom()**: resetta lo zoom.
+**resetZoom()**: Resets the zoom level.
 
 ### FloorPlansOptions
 
-Tramite le "*FloorPlansOptions*" è possibile definire le opzioni della planimetria (assi, tool-bar, ancore, varchi e punti). Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito associate a sensori 'Rtls'. I varchi sono di solito associati a sensori 'Rfid'. I punti possono essere statici o dinamici. I punti dinamici rappresentano un rilevamanto di uno o più sensori 'Rtls' (o possono essere inviati dal sistema). I punti statici sono punti fissi.
+The "FloorPlansOptions" object allows you to define the floor plan options (axes, tool-bar, anchors, gateways, and points). There are 3 types of 'points': anchors, gateways, and points. Anchors are usually associated with 'Rtls' sensors. Gateways are usually associated with 'Rfid' sensors. Points can be static or dynamic. Dynamic points represent a detection of one or more 'Rtls' sensors (or can be sent by the system). Static points are fixed points.
 
-**widthMeters**: Larghezza in metri della planimeria. (*number - required*).
+**widthMeters**: Width in meters of the floor plan. (*number - required*).
 
-**heightMeters**: Altezza in metri della planimetria. (*number - required*).
-
-<br>
-
-**enablePanelOverlay**: Abilita un pannello di overlay. (*boolean - default: false*).
-
-**enableNavbar**: Abilita una tool-bar per (zoom e posizionamento). (*boolean - default: false*).
-
-**enableNavbarZoom**: Abilita i pulsanti per lo zoom all'interno della tool-bar. (*boolean - default: false*).
-
-**enableNavbarPosition**: Abilita i pulsanti per il posizionamento all'interno della tool-bar. (*boolean - default: false*).
-
-**alignNavbar**: Posiziona la tool-bar a destra o a sinistra ('top-left', 'top-right'). (*string - default: top-left*).
+**heightMeters**: Height in meters of the floor plan. (*number - required*).
 
 <br>
 
-**contentPosition**: Allineamento del canvas all'interno del contenitore scrollabile (top-left, top-right, bottom-left, bottom-right',center). (*string - default: top-left*).
+**enablePanelOverlay**: Enable an overlay panel. (*boolean - default: false*).
 
-**enableSelectedPosition**: Abilita la selezione di un punto tramite il metodo "*gotoContentPosition(position: string)*". Il parametro
-"*position*" specifica la posizione in metri all'interno della planimetria (es. 18-1). La posizione viene evidenziata sotto forma di "croce".
+**enableNavbar**: Enable a toolbar for (zoom and positioning). (*boolean - default: false*).
 
-**contentSelectedColor**: Color della posizione selezionata (tramite il metodo "*gotoContentPosition()*"). (*string - default: #424242*).
+**enableNavbarZoom**: Enable zoom buttons within the toolbar. (*boolean - default: false*).
 
-**contentSelectedStroke**: Stroke della posizione selezionata (tramite il metodo "*gotoContentPosition()*"). (*string - default: #424242*).
+**enableNavbarPosition**: Enables buttons for positioning within the toolbar. (*boolean - default: false*).
 
-**callbackZoom**: Funzione di callback quando si effettua uno zoom per ingrandire o rimpicciolire. O si resetta lo zoom al valore 
-iniziale. (*function - optional*).
+**alignNavbar**: Position the toolbar to the right or left ('top-left', 'top-right'). (*string - default: top-left*).
 
 <br>
 
-**anchorRtlsUnselectedColor**: Color quando un 'ancora' è nello stato 'unselected'. (*string - default: #ff0000*).
+**contentPosition**: Aligning the canvas inside the scrollable container (top-left, top-right, bottom-left, bottom-right',center). (*string - default: top-left*).
 
-**anchorRtlsUnselectedGeometry**:?: Geometria associata ad un 'ancora' quando è nello stato 'unselected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**enableSelectedPosition**: Enables point selection via the "*gotoContentPosition(position: string)*" method. The "*position*" parameter specifies the position in meters within the floor plan (e.g. 18-1). The position is highlighted as a "cross".
 
-**anchorRtlsUnselectedRadius**: Radius della geometria quando l'ancora è nello stato 'unselected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**contentSelectedColor**: Color of the selected position (via the "*gotoContentPosition()*" method). (*string - default: #424242*).
 
-**anchorRtlsUnselectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*string*).;
+**contentSelectedStroke**: Stroke of the selected position (via the "*gotoContentPosition()*" method). (*string - default: #424242*).
 
-**anchorRtlsUnselectedIconWidth**: Larghezza dell'icona associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*number - default: 30*).
-
-**anchorRtlsUnselectedIconHeight**: Altezza dell'icona associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*number - default: 30*).
-
-**anchorRtlsSelectedColor**: Color quando un 'ancora' è nello stato 'selected'. (*string - default: #ff0000*).
-
-**anchorRtlsSelectedGeometry**:?: Geometria associata ad un 'ancora' quando è nello stato 'selected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
-
-**anchorRtlsSelectedRadius**: Radius della geometria quando l'ancora è nello stato 'selected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
-
-**anchorRtlsSelectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'selected' (icon). (*string*).;
-
-**anchorRtlsSelectedIconWidth**: Larghezza dell'icona associata ad un 'ancora' quando è nello stato 'selected' (icon). (*number - default: 30*).
-
-**anchorRtlsUSelectedIconHeight**: Altezza dell'icona associata ad un 'ancora' quando è nello stato 'selected' (icon). (*number - default: 30*).
-
-**anchorRtlsPoint**: Lista ancore da visualizzare, la lista è formata da un array di tipo "*FloorPlansPoint*". (*FloorPlansPoint - default: []*).
-
-**enableAnchorRtlsContextMenu**: Abilita un "context menu" associato all'ancora che viene visualizzato tramite tasto destro del mouse. (*boolean - default: false*).
-
-**anchorRtlsContextMenu**: Lista "item menu" da visualizzare nel momento in cui viene mostrato il menu. La lista è condivisa per tutte le 'ancore' presenti nella lista "*anchorRtlsPoint*". Per avere "item menu" diversi per ogni ancora, è necessario definirli a livello di "*FloorPlansPoint*". (*ContextMenu - default: []*).
-
-**callbackClickAckanchorRtls**: Funzione di callback quando si clicca su un 'ancora'. (*function - optional*).
+**callbackZoom**: Callback function when zooming in or out. Or reset zoom to initial value. (*function - optional*).
 
 <br>
 
-**transitRfidUnselectedColor**: Color quando un 'varco rfid' è nello stato 'unselected'. (*string - default: #ff0000*).
+**anchorRtlsUnselectedColor**: Color when an 'anchor' is in the 'unselected' state. (*string - default: #ff0000*).
 
-**transitRfidUnselectedGeometry**:?: Geometria associata ad un 'varco rfid 'quando è nello stato 'unselected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**anchorRtlsUnselectedGeometry**: Geometry associated with an 'anchor' when it is in the 'unselected' state (circle, square, rhombus,  triangle, icon). (*string - default: circle*).
 
-**transitRfidUnselectedRadius**: Radius della geometria quando il 'varco rfid' è nello stato 'unselected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**anchorRtlsUnselectedRadius**: Radius of the geometry when the anchor is in the 'unselected' state (circle, square, rhombus,     triangle). (*number - default: 15*).
 
-**transitRfidUnselectedPathicon**: Pathicon dell'immagine associata ad un 'varco rfid' quando è nello stato 'unselected' (icon). (*string*).;
+**anchorRtlsUnselectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*string*).
 
-**transitRfidUnselectedIconWidth**: Larghezza dell'icona associata ad un 'varco rfid' quando è nello stato 'unselected' (icon). (*number - default: 30*).
+**anchorRtlsUnselectedIconWidth**: Width of the icon associated with an 'anchor' when it is in the 'unselected' state (icon). (*number - default: 30*).
 
-**transitRfidUnselectedIconHeight**: Altezza dell'icona associata ad un 'varco rfid' quando è nello stato 'unselected' (icon). (*number - default: 30*).
+**anchorRtlsUnselectedIconHeight**: Height of the icon associated with an 'anchor' when it is in the 'unselected' state (icon). (*number - default: 30*).
 
-**transitRfidSelectedColor**: Color quando un 'varco rfid' è nello stato 'selected'. (*string - default: #ff0000*).
+**anchorRtlsSelectedColor**: Color when an 'anchor' is in the 'selected' state. (*string - default: #ff0000*).
 
-**transitRfidSelectedGeometry**:?: Geometria associata ad un 'varco rfid' quando è nello stato 'selected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
+**anchorRtlsSelectedGeometry**: Geometry associated with an 'anchor' when it is in the 'selected' state (circle, square, rhombus,  triangle, icon). (*string - default: circle*).
 
-**transitRfidSelectedRadius**: Radius della geometria quando il 'varco rfid' è nello stato 'selected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
+**anchorRtlsSelectedRadius**: Radius of the geometry when the anchor is in the 'selected' state (circle, square, rhombus,     triangle). (*number - default: 15*).
 
-**transitRfidSelectedPathicon**: Pathicon dell'immagine associata ad un 'varco rfid' quando è nello stato 'selected' (icon). (*string*).;
+**anchorRtlsSelectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'selected'  (icon). (*string*).
 
-**transitRfidSelectedIconWidth**: Larghezza dell'icona associata ad un 'varco rfid' quando è nello stato 'selected' (icon). (*number - default: 30*).
+**anchorRtlsSelectedIconWidth**: Width of the icon associated with an 'anchor' when it is in the 'selected' state (icon). (*number - default: 30*).
 
-**transitRfidUSelectedIconHeight**: Altezza dell'icona associata ad un 'varco rfid' quando è nello stato 'selected' (icon). (*number - default: 30*).
+**anchorRtlsUSelectedIconHeight**: Height of the icon associated with an 'anchor' when it is in the 'selected' state (icon). (*number - default: 30*).
 
-**transitRfidPoint**: Lista 'varchi rfid' da visualizzare, la lista è formata da un array di tipo "*FloorPlansPoint*". (*FloorPlansPoint - default: []*).
+**anchorRtlsPoint**: List of anchors to display, the list is formed by an array of type "*FloorPlansPoint*". (*FloorPlansPoint - default: []*).
 
-**enableTransitRfidContextMenu**: Abilita un "context menu" associato al 'varco rfid' che viene visualizzato tramite tasto destro del mouse. (*boolean - default: false*).
+**enableAnchorRtlsContextMenu**: Enables a "context menu" associated with the anchor that appears when you right-click. (*boolean - default: false*).
 
-**transitRfidContextMenu**: Lista "item menu" da visualizzare nel momento in cui viene mostrato il menu. La lista è condivisa per tutti i 'varchi rfid' presenti nella lista "*transitRfidPoint*". Per avere "item menu" diversi per ogni ancora, è necessario definirli a livello di "*FloorPlansPoint*". (*ContextMenu - default: []*).
+**anchorRtlsContextMenu**: "item menu" list to display when the menu is shown. The list is shared for all the 'anchors' present in the "*anchorRtlsPoint*" list. To have different "item menu" for each anchor, it is necessary to define them at the "*FloorPlansPoint*" level. (*ContextMenu - default: []*).
 
-**callbackClickTransitRfid**: Funzione di callback quando si clicca su un 'varco rfid'. (*function - optional*).
-
-<br>
-
-**pointUnselectedColor**: Color quando un 'punto' è nello stato 'unselected'. (*string - default: #ff0000*).
-
-**pointUnselectedGeometry**:?: Geometria associata ad un 'punto' quando è nello stato 'unselected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
-
-**pointUnselectedRadius**: Radius della geometria quando un punto è nello stato 'unselected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
-
-**pointUnselectedPathicon**: Pathicon dell'immagine associata ad un 'punto' quando è nello stato 'unselected' (icon). (*string*).;
-
-**pointUnselectedIconWidth**: Larghezza dell'icona associata ad un 'punto' quando è nello stato 'unselected' (icon). (*number - default: 30*).
-
-**pointUnselectedIconHeight**: Altezza dell'icona associata ad un 'punto' quando è nello stato 'unselected' (icon). (*number - default: 30*).
-
-**pointSelectedColor**: Color quando un 'punto' è nello stato 'selected'. (*string - default: #ff0000*).
-
-**pointSelectedGeometry**:?: Geometria associata ad un 'punto' quando è nello stato 'selected' (circle, square, rhombus,     triangle, icon). (*string - default: circle*).
-
-**pointSelectedRadius**: Radius della geometria quando un punto è nello stato 'selected' (circle, square, rhombus,     triangle). (*number - default: 15*).;
-
-**pointSelectedPathicon**: Pathicon dell'immagine associata ad un 'punto' quando è nello stato 'selected' (icon). (*string*).;
-
-**pointSelectedIconWidth**: Larghezza dell'icona associata ad un 'punto' quando è nello stato 'selected' (icon). (*number - default: 30*).
-
-**pointSelectedIconHeight**: Altezza dell'icona associata ad un 'punto' quando è nello stato 'selected' (icon). (*number - default: 30*).
-
-**enablePointContextMenu**: Abilita un "context menu" associato al punto che viene visualizzato tramite tasto destro del mouse. (*boolean - default: false*).
-
-**pointContextMenu**: Lista "item menu" da visualizzare nel momento in cui viene mostrato il menu. Per avere "item menu" diversi per ogni punto, è necessario definirli a livello di "*FloorPlansPoint*". (*ContextMenu - default: []*).
-
-**callbackClickPoint**: Funzione di callback quando si clicca su un 'punto'. (*function - optional*).
+**callbackClickAckanchorRtls**: Callback function when clicking on an 'anchor'. (*function - optional*).
 
 <br>
 
-**topAxisX.TopAxisX.visibleTopAxisX**: Asse X top visibile. (*boolean - default: false*).
+**transitRfidUnselectedColor**: Color when an 'rfid gate' is in the 'unselected' state. (*string - default: #ff0000*).
+
+**transitRfidUnselectedGeometry**: Geometry associated with an 'rfid gate' when it is in the 'unselected' state (circle, square, rhombus,  triangle, icon). (*string - default: circle*).
+
+**transitRfidUnselectedRadius**: Radius of the geometry when the rfid gate is in the 'unselected' state (circle, square, rhombus,     triangle). (*number - default: 15*).
+
+**transitRfidUnselectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*string*).
+
+**transitRfidUnselectedIconWidth**: Width of the icon associated with an 'rfid gate' when it is in the 'unselected' state (icon). (*number - default: 30*).
+
+**transitRfidUnselectedIconHeight**: Height of the icon associated with an 'rfid gate' when it is in the 'unselected' state (icon). (*number - default: 30*).
+
+**transitRfidSelectedColor**: Color when an 'rfid gate' is in the 'selected' state. (*string - default: #ff0000*).
+
+**transitRfidSelectedGeometry**: Geometry associated with an 'rfid gate' when it is in the 'selected' state (circle, square, rhombus,  triangle, icon). (*string - default: circle*).
+
+**transitRfidSelectedRadius**: Radius of the geometry when the rfid gate is in the 'selected' state (circle, square, rhombus,     triangle). (*number - default: 15*).
+
+**transitRfidSelectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'selected'  (icon). (*string*).
+
+**transitRfidSelectedIconWidth**: Width of the icon associated with an 'rfid gate' when it is in the 'selected' state (icon). (*number - default: 30*).
+
+**transitRfidSelectedIconHeight**: Height of the icon associated with an 'rfid gate' when it is in the 'selected' state (icon). (*number - default: 30*).
+
+**transitRfidPoint**: List of rfid gates to display, the list is formed by an array of type "*FloorPlansPoint*". (*FloorPlansPoint - default: []*).
+
+**enabletransitRfidContextMenu**: Enables a "context menu" associated with the rfid gate that appears when you right-click. (*boolean - default: false*).
+
+**transitRfidContextMenu**: "item menu" list to display when the menu is shown. The list is shared for all the 'rfid gates' present in the "*transitRfidPoint*" list. To have different "item menu" for each rfid gate, it is necessary to define them at the "*FloorPlansPoint*" level. (*ContextMenu - default: []*).
+
+**callbackClickAcktransitRfid**: Callback function when clicking on an 'rfid gate'. (*function - optional*).
+
+<br>
+
+**pointUnselectedColor**: Color when an 'point' is in the 'unselected' state. (*string - default: #ff0000*).
+
+**pointUnselectedGeometry**: Geometry associated with an 'point' when it is in the 'unselected' state (circle, square, rhombus,  triangle, icon). (*string - default: circle*).
+
+**pointUnselectedRadius**: Radius of the geometry when the point is in the 'unselected' state (circle, square, rhombus,     triangle). (*number - default: 15*).
+
+**pointUnselectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'unselected' (icon). (*string*).
+
+**pointUnselectedIconWidth**: Width of the icon associated with an 'point' when it is in the 'unselected' state (icon). (*number - default: 30*).
+
+**pointUnselectedIconHeight**: Height of the icon associated with an 'point' when it is in the 'unselected' state (icon). (*number - default: 30*).
+
+**pointSelectedColor**: Color when an 'point' is in the 'selected' state. (*string - default: #ff0000*).
+
+**pointSelectedGeometry**: Geometry associated with an 'point' when it is in the 'selected' state (circle, square, rhombus,  triangle, icon). (*string - default: circle*).
+
+**pointSelectedRadius**: Radius of the geometry when the point is in the 'selected' state (circle, square, rhombus,     triangle). (*number - default: 15*).
+
+**pointSelectedPathicon**: Pathicon dell'immagine associata ad un 'ancora' quando è nello stato 'selected'  (icon). (*string*).
+
+**pointSelectedIconWidth**: Width of the icon associated with an 'point' when it is in the 'selected' state (icon). (*number - default: 30*).
+
+**pointSelectedIconHeight**: Height of the icon associated with an 'point' when it is in the 'selected' state (icon). (*number - default: 30*).
+
+**enabletransitRfidContextMenu**: Enables a "context menu" associated with the point that appears when you right-click. (*boolean - default: false*).
+
+**pointContextMenu**: "item menu" list to display when the menu is shown. The list is shared for all the 'points' present in the "*pointPoint*" list. To have different "item menu" for each point, it is necessary to define them at the "*FloorPlansPoint*" level. (*ContextMenu - default: []*).
+
+**callbackClickAcktransitRfid**: Callback function when clicking on an 'point'. (*function - optional*).
+
+<br>
+
+**topAxisX.TopAxisX.visibleTopAxisX**: Top X-axis visible. (*boolean - default: false*).
 
 **topAxisX.TopAxisX.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -317,7 +314,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**bottomAxisX.BottomAxisX.visibleBottomAxisX**: Asse X bottom visibile. (*boolean - default: false*).
+**bottomAxisX.BottomAxisX.visibleBottomAxisX**: Bottom X-axis visible. (*boolean - default: false*).
 
 **bottomAxisX.BottomAxisX.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -329,7 +326,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**leftAxisY.LeftAxisY.visibleLeftAxisY**: Asse Y left visibile. (*boolean - default: false*).
+**leftAxisY.LeftAxisY.visibleLeftAxisY**: Y-axis left visible. (*boolean - default: false*).
 
 **leftAxisY.LeftAxisY.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -341,7 +338,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**rightAxisY.RightAxisY.visibleRightAxisY**: Asse Y right visibile. (*boolean - default: false*).
+**rightAxisY.RightAxisY.visibleRightAxisY**: Y-axis right visible. (*boolean - default: false*).
 
 **rightAxisY.RightAxisY.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -353,63 +350,63 @@ iniziale. (*function - optional*).
 
 <br>
 
-**gridOverlay.GridOverlay.visibleGridOverlay**: Grid overlay visibile. (*boolean - default: false*).
+**gridOverlay.GridOverlay.visibleGridOverlay**: Grid overlay visible. (*boolean - default: false*).
 
 ### FloorPlansPoint
 
-**id**: Id del punti. (*string - required*).
+**id**: Id of the point. (*string - required*).
 
-**group**: Spefifica un raggruppamento. (*string - optional*).
+**group**: Specifies a grouping. (*string - optional*).
 
-**name**: Nome del punto. (*string - required*).
+**name**: Name of the point. (*string - required*).
 
-**metersX**: Coordinate in metri asse X. (*number - required*).
+**metersX**: Coordinates in meters X-axis. (*number - required*).
 
-**metersY**: Coordinate in metri asse Y. (*number - required*).
+**metersY**: Coordinates in meters Y-axis. (*number - required*).
 
-**type**: Tipo punto (anchor, transit, point). (*string - required*).
+**type**: Type of point (anchor, transit, point). (*string - required*).
 
-**typeMovement**: Tipo movimento (enter, inside, leave, fix'). (*string - required*).
+**typeMovement**: Type of movement (enter, inside, leave, fix'). (*string - required*).
 
-**enableCallbackEvent**: Abilita l'evento di callback quando si clicca sul punto. (*boolean - required*).
+**enableCallbackEvent**: Enables the callback event when clicking on the point. (*boolean - required*).
 
-**pointMetadata**: Metadati associati al punto. (*PointMetadata - optional*).
+**pointMetadata**: Metadata associated with the point. (*PointMetadata - optional*).
 
-**contextMenu**: ContextMenu associato al punto. (*ContextMenu - optional*).
+**contextMenu**: ContextMenu associated with the point. (*ContextMenu - optional*).
 
 ### PointMetadata
 
-**id**: Id del metadato. (*string - required*).
+**id**: Id of the metadata. (*string - required*).
 
-**name**: Nome del metadato. (*string - required*).
+**name**:  Name of the metadata. (*string - required*).
 
-**type**: Tipo metadato (string, number, boolean'). (*string - required*).
+**type**: Type of metadata (string, number, boolean'). (*string - required*).
 
-**value**: Valore metadato. (*any - required*).
+**value**: Value metadata. (*any - required*).
 
 ### Marker
 
-**id**: Id del marker. (*string - required*).
+**id**: Id of the marker. (*string - required*).
 
-**group**: Spefifica un raggruppamento. (*string - optional*).
+**group**: Specifies a grouping. (*string - optional*).
 
-**name**: Nome del marker. (*string - required*).
+**name**: Name of the marker. (*string - required*).
 
-**metersX**: Coordinate in metri asse X. (*number - required*).
+**metersX**: Coordinates in meters X-axis. (*number - required*).
 
-**metersY**: Coordinate in metri asse Y. (*number - required*).
+**metersY**: Coordinates in meters Y-axis. (*number - required*).
 
-**pixelX**: Coordinate in pixel asse X. (*number - required*).
+**pixelX**: Coordinates in pixel X-axis. (*number - required*).
 
-**pixelY**: Coordinate in pixel asse Y. (*number - required*).
+**pixelY**: Coordinates in pixel Y-axis. (*number - required*).
 
-**radius**: Radius della geometria. (*number - required*).
+**radius**: Radius of the geometry. (*number - required*).
 
-**enableCallbackEvent**: Abilita l'evento di callback quando si clicca sul marker. (*boolean - required*).
+**enableCallbackEvent**:  Enables the callback event when clicking on the marker. (*boolean - required*).
 
-**pointMetadata**: Metadati associati al marker. (*PointMetadata - optional*).
+**pointMetadata**: Metadata associated with the marker. (*PointMetadata - optional*).
 
-**contextMenu**: ContextMenu associato al marker. (*ContextMenu - optional*).
+**contextMenu**: ContextMenu associated with the marker. (*ContextMenu - optional*).
 
 ### ZoomValueArg
 

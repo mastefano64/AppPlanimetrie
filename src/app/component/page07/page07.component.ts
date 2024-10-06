@@ -113,19 +113,19 @@ export class Page07Component implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    const filename = '/planimetria2.png';
+    const filename = 'planimetria2.png';
     this.loadImage(filename);
   }
 
   onSelectedFloorPlans(event: MatSelectChange): void {
     const value = event.value;
     if (value === 'planimetria2') {
-      const filename = '/planimetria2.png';
+      const filename = 'planimetria2.png';
       this.loadImage(filename);
       this.service.resetFloorPlans()
     }
     if (value === 'planimetria3') {
-      const filename = '/planimetria3.png';
+      const filename = 'planimetria3.png';
       this.loadImage(filename);
       this.service.resetFloorPlans()
     }

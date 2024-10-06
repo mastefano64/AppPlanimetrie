@@ -80,7 +80,7 @@ export class Page01Component implements OnInit, AfterViewInit, OnDestroy {
 
   loadImage(): void {
     this.imagefloorplans = new Image();
-    this.imagefloorplans.src = '/planimetria2.png';
+    this.imagefloorplans.src = 'planimetria2.png';
     this.imagefloorplans.onload = (event) => {
       this.floorplans.createFloorPlan(this.imagefloorplans, this.options);
       this.service.startPointFloorPlans();

@@ -141,7 +141,7 @@ Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito ass
 
 **createFloorPlan(imageplans: HTMLImageElement, options: FloorPlansOptions)**: Crea una mappa, passando l'immagine letta e le opzioni.
 
-**addOverlay(id: string, position: string)**: Aggiunge un oberlay alla mappa.
+**addOverlay(id: string, position: string)**: Aggiunge un overlay alla mappa.
 
 **enableBottomAxisX(value: boolean)**: Abilita l'asse delle X posizionato Bottom.
 
@@ -153,11 +153,11 @@ Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito ass
 
 **enableGridOverlay(value: boolean)**: Abilita la grid overlay.
 
-**drawFloorPlanMarker(listp: FloorPlansPoint[])**: Disegna la mappa, di solito ogni volta che scatta una notifica. 
+**drawFloorPlanMarker(listp: FloorPlansPoint[])**: Disegna la mappa, all'inizio e ogni volta che scatta una notifica. 
 
 **setContentPosition(position: string)**: Allinea la mappa alla posizione specificata (top-left, top-right, bottom-left, bottom-right',center).
 
-**gotoContentPosition(position: string)**: Vai alla cposizione specificata sulla mappa (posizione in metri).
+**gotoContentPosition(position: string)**: Vai alla posizione specificata sulla mappa (posizione in metri).
 
 **resetContentPosition()**: Resetta la posizione specificata.
 
@@ -171,19 +171,11 @@ Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito ass
 
 ### FloorPlansOptions
 
-Tramite le "*FloorPlansOptions*" è possibile definire le opzioni della planimetria (assi, tool-bar, ancore, varchi e punti). Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito associate a sensori 'Rtls'. I varchi sono di solito associati a sensori 'Rfid'. I punti possono essere statici o dinamici. I punti dinamici rappresentano un rilevamanto di uno o più sensori 'Rtls' (o possono essere inviati da sistema). I punti statici sono punti fissi.
+Tramite le "*FloorPlansOptions*" è possibile definire le opzioni della planimetria (assi, tool-bar, ancore, varchi e punti). Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito associate a sensori 'Rtls'. I varchi sono di solito associati a sensori 'Rfid'. I punti possono essere statici o dinamici. I punti dinamici rappresentano un rilevamanto di uno o più sensori 'Rtls' (o possono essere inviati dal sistema). I punti statici sono punti fissi.
 
 **widthMeters**: Larghezza in metri della planimeria. (*number - required*).
 
 **heightMeters**: Altezza in metri della planimetria. (*number - required*).
-
-<br>
-
-**gridOverlay.GridOverlay.visibleGridOverlay**: Grif overlay visibile. (*boolean - default: false*).
-
-**rightAxisY.RightAxisY.lineStrokeColor**: StrokeColor. (*string - default: black*).
-
-**rightAxisY.RightAxisY.lineWidth**: Width. (*number - default: 1*).
 
 <br>
 
@@ -358,6 +350,10 @@ iniziale. (*function - optional*).
 **rightAxisY.RightAxisY.linefillColor**: FillColor. (*string - default: black*).
 
 **rightAxisY.RightAxisY.lineFont**: Font. (*string - default: 15px Arial*).
+
+<br>
+
+**gridOverlay.GridOverlay.visibleGridOverlay**: Grid overlay visibile. (*boolean - default: false*).
 
 ### FloorPlansPoint
 

@@ -317,7 +317,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**bottomAxisX.BottomAxisX.visibleBottomAxisX**: Asse X top visibile. (*boolean - default: false*).
+**bottomAxisX.BottomAxisX.visibleBottomAxisX**: Asse X bottom visibile. (*boolean - default: false*).
 
 **bottomAxisX.BottomAxisX.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -329,7 +329,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**leftAxisY.LeftAxisY.visibleLeftAxisY**: Asse X top visibile. (*boolean - default: false*).
+**leftAxisY.LeftAxisY.visibleLeftAxisY**: Asse Y left visibile. (*boolean - default: false*).
 
 **leftAxisY.LeftAxisY.lineStrokeColor**: StrokeColor. (*string - default: black*).
 
@@ -341,7 +341,7 @@ iniziale. (*function - optional*).
 
 <br>
 
-**rightAxisY.RightAxisY.visibleRightAxisY**: Asse X top visibile. (*boolean - default: false*).
+**rightAxisY.RightAxisY.visibleRightAxisY**: Asse Y right visibile. (*boolean - default: false*).
 
 **rightAxisY.RightAxisY.lineStrokeColor**: StrokeColor. (*string - default: black*).
 

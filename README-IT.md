@@ -167,7 +167,7 @@ Esistono 3 tipi di 'punti': ancore, varchi e punti. Le ancore sono di solito ass
 
 **zoomIncrement()**: Incrementa lo zoom.
 
-**zoomDecrement()**: decrementa lo zoom.
+**zoomDecrement()**: Decrementa lo zoom.
 
 **resetZoom()**: resetta lo zoom.
 

@@ -4,6 +4,8 @@
 
 [LIVE DEMO](https://www.stefanomarchisio.it/AppPlanimetrie/index.html)<br>
 
+[Italian article: Dal sensore IoT al Cloud, quanti Layer verranno attraversati? (CloudComputing, EdgeComputing, IoT-Gateway)](https://www.linkedin.com/pulse/dal-sensore-iot-al-cloud-quanti-layer-verranno-stefano-marchisio-9qasf)<br>
+
 Quando si parla di mappe geolocalizzate viene subito in mente l'accoppiata OpenLayer/GPS (per esempio), questo sistema funziona bene in spazi aperti, ma perde di precesione in spazi chiusi. In un contesto simile (spazi chiusi) entra in gioco la tecnologia RTLS/UWB (lasciando perdere i vari dettagli), da un punto di vista tecnico RTLS/UWB si avvale di una banda spettrale estremamente elevata che sfrutta una pluralità di frequenze dell’ordine dei GHz (generalmente fra i 3 e i 7). Generalmente viene preso in considerazione il ToF (Time of Flight, tempo di “volo” del segnale) ovvero il tempo necessario al segnale radio emesso dal tag per raggiungere l’ancora di riferimento (se esistono 3 o più ancore di riferimento e viene fatta una trilaterazione). In questo modo si stabilisce la posizione di un oggetto dotato di TAG, e la posizione è espressa in "metri", invece che in coordinate geografiche.
 
 #### <center>Pertanto trovandoci in un abiente chiuso abbiamo la necessità di usare delle planimetrie invece delle classiche mappe che usano coordinate geografiche (poi esistono anche le eccezzioni).</center> ####
